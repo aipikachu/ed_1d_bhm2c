@@ -1,54 +1,16 @@
-function [ham_elems] = hamiltonian_1d_bhm2C_elements(basis,BDC,TAG_)
+function [ham_elems] = hamiltonian_1d_bhm2C_elements(basis,BDC)
 % [ham_elems] = hamiltonian_1d_bhm2C_elements(basis,BDC)
 %
 
 if nargin < 2
     BDC = 'obc';
-    TAG_ = '';
-elseif nargin < 3
-    TAG_ = '';
-elseif nargin > 3
+elseif nargin > 2
     error('Error! Invalid input parameters!')
 end
 
 
 %%
 ham_elems = struct();
-
-
-%% Input parameter check
-TAG_s = true;
-
-if isempty(TAG_)
-    cache_name = 'ham_elems_cache.mat';
-else
-    cache_name = ['ham_elems_cache_',TAG_,...
-        sprintf('L%02d_Nup%02d_Ndn%02d_nMax%01d',...
-        basis.L,basis.N_up,basis.N_dn,basis.nMax),'.mat'];
-end
-
-try
-    cache_dir = [pwd,filesep,'cache'];
-    cache_info = load([cache_dir,filesep,cache_name]);
-    if (~strcmp(cache_info.BDC,BDC)) ...
-            || (cache_info.basis.nMax ~= basis.nMax) ...
-            || (cache_info.basis.L ~= basis.L) ...
-            || (cache_info.basis.N_up ~= basis.N_up) ...
-            || (cache_info.basis.N_dn ~= basis.N_dn)
-        TAG_s = false; 
-    end
-catch
-    TAG_s = false;    
-end
-
-%
-if TAG_s
-    ham_elems = cache_info.ham_elems;
-    fprintf('Using the cache data!\n')
-    return
-else
-    fprintf('Re-generate the hamiltonian elements!\n')
-end
 
 
 %%
@@ -162,17 +124,4 @@ ham_elems.ham_elems_mu_dn = ham_elems_mu_dn;
 ham_elems.BDC = BDC;
 
 
-%% write cache info. into disk
-try
-    cache_dir = [pwd,filesep,'cache'];
-    if ~exist(cache_dir,'dir')
-        mkdir(cache_dir)
-    end
-    
-    save([cache_dir,filesep,cache_name],...
-        'basis','BDC','ham_elems','TAG_');
-    
-catch
-    
-end
 

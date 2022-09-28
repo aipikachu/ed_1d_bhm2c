@@ -64,9 +64,8 @@ phi_init(idx_init_st) = 1;
 
 
 %% hamiltonian elements generate
-TAG_ = 'lgt_conf_';
 tStart = tic; 
-ham_elems = hamiltonian_1d_bhm2C_elements(basis,BDC,TAG_);
+ham_elems = hamiltonian_1d_bhm2C_elements(basis,BDC);
 tEnd = toc(tStart);
 fprintf('Elapsed time of hamiltonian elements generation is %.6f seconds.\n',tEnd)
 
