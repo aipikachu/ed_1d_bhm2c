@@ -7,9 +7,9 @@ addpath(genpath('libs'))
 
 
 %% init state
-L = 9;
+L = 15;
 st_init_up = zeros(1,L);
-st_init_dn = [0 2 0 0 0 2 0 0 1];
+st_init_dn = [0 2 0 0 0 2 0 0 0 2 0 0 1 0 0];
 
 if (length(st_init_up) ~= L) || (length(st_init_dn) ~= L)
     error('Error! Invalid input parameters!')
@@ -23,8 +23,8 @@ nMax = 3;
 
 
 %% Hubbard parameters
-J = 50.0 * 2 * pi;
-U = 780.0 * 2 * pi;
+J = 70.0 * 2 * pi;
+U = 820.0 * 2 * pi;
 
 %
 U_uu = U;      % U_up_up
@@ -35,9 +35,8 @@ J_dn = J;
 
 % staggered potential
 staG0 = 0.5 * U + 1.0 * J;  
-
 mu_up_lt = 0.0*2*pi*(1:L) + mod(1:L,2)*staG0;
-mu_dn_lt = 60.0*2*pi*(1:L) + mod(1:L,2)*staG0;
+mu_dn_lt = 110.0*2*pi*(1:L) + mod(1:L,2)*staG0;
 
 BDC = 'obc';   % 'obc' - open boundary condition; 'pbs' - periodic case
 % BDC = 'pbc';   % 'obc' - open boundary condition; 'pbs' - periodic case
@@ -58,17 +57,16 @@ fprintf('Total basis number is %d.\n',ns)
 
 %% state index search
 idx_init_st = state_index_search(st_init_up,st_init_dn,basis);
-
 % basis.state_up(idx_init_st,:)
 % basis.state_dn(idx_init_st,:)
-
 phi_init = zeros(ns,1);
 phi_init(idx_init_st) = 1;
 
 
 %% hamiltonian elements generate
+TAG_ = 'lgt_conf_';
 tStart = tic; 
-ham_elems = hamiltonian_1d_bhm2C_elements(basis,BDC);
+ham_elems = hamiltonian_1d_bhm2C_elements(basis,BDC,TAG_);
 tEnd = toc(tStart);
 fprintf('Elapsed time of hamiltonian elements generation is %.6f seconds.\n',tEnd)
 
@@ -103,8 +101,7 @@ for kk = 2:nt
     stat_nC = occupation_statistics_1d_bhm2C_Fcn(psic,basis);
     density_up_Mt = cat(1,density_up_Mt,stat_nC.density_up_ltC);
     density_dn_Mt = cat(1,density_dn_Mt,stat_nC.density_dn_ltC);
-    
-    % fprintf('\n')
+
 end
 tEnd = toc(tStart);
 fprintf('\nElapsed time is %.6f seconds.\n',tEnd)
