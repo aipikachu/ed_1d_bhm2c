@@ -23,6 +23,7 @@ function [basis] = boson_basis_1d(L,Nb,nMax)
 basis = struct();
 
 
+%%
 % All possible placements of internal dividers.                                       
 dividers = nchoosek(1:(Nb+L-1),L-1);                                                  
 ndividers = size(dividers,1);                                                        
@@ -47,9 +48,8 @@ idxIntl = state * ((nMax+1).^(L-1:-1:0))';
 
 %%
 basis.state = state;
-basis.ns = ns;
 basis.idxIntl = idxIntl;
+basis.ns = ns;
 basis.nMax = nMax;
-basis.L = L;
 basis.Nb = Nb;
-
+basis.L = L;

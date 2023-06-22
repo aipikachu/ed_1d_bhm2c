@@ -1,13 +1,14 @@
 function [basis] = boson_basis_spinor(L,N_up,N_dn,nMax)
-
 %%
 % L = 4;
 % N_up = 1;
 % N_dn = 3;
 % nMax = 3;
 
+
 %%
 basis = struct();
+
 
 %%
 if nargin < 4
@@ -48,4 +49,3 @@ basis.nMax = nMax;
 basis.L = L;
 basis.N_up = N_up;
 basis.N_dn = N_dn;
-
